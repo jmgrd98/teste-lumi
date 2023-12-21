@@ -2,13 +2,25 @@ import os
 import psycopg2
 import re
 from pdfminer.high_level import extract_text
-
 import os
 import psycopg2
 import re
+import pdfplumber
 from pdfminer.high_level import extract_text
 
+def extract_table_data(pdf_path):
+    with pdfplumber.open(pdf_path) as pdf:
+        all_text = []
+        for page in pdf.pages:
+            table = page.extract_table()
+            if table:
+                all_text.extend(table)
+        return all_text
+        
+
 def extract_data_from_pdf(pdf_path):
+    table_data = extract_table_data(pdf_path)
+    # print(table_data)
 
     text = extract_text(pdf_path)
 
@@ -25,15 +37,18 @@ def extract_data_from_pdf(pdf_path):
     energia_compensada_valor = None
     contrib_ilum_publica = None
 
+    for row in table_data:
+        print('ROW', row)
+        if "Energia Elétrica" in row[0]:
+            energia_eletrica_quantidade = row[2]
+            energia_eletrica_valor = row[3]
+
 
     for i in range(len(lines)):
         if "Nº DO CLIENTE" in lines[i]:
             if i + 1 < len(lines):
                 numero_cliente_line = lines[i + 1].strip()
-                # print(f"Line after Nº DO CLIENTE: {numero_cliente_line}")
-
                 numero_cliente = "".join(numero_cliente_line.split())
-                # print(f"Extracted numero_cliente as string: {numero_cliente}")
 
         elif "Referente a" in lines[i]:
             mes_referencia = lines[i + 1].strip()
@@ -51,10 +66,38 @@ def extract_data_from_pdf(pdf_path):
                     if quantidade_str and valor_str:
                         energia_eletrica_quantidade = float(quantidade_str)
                         energia_eletrica_valor = float(valor_str)
-                        print(f"Converted Energia Elétrica Valor (before insertion): {energia_eletrica_valor}")
                         break
             except ValueError as e:
                 print(f"Conversion error: {e}")
+
+        elif "Energia SCEE s/ ICMS" in lines[i]:
+            try:
+                if i + 10 < len(lines) and i + 14 < len(lines):
+                    quantidade_str = lines[i + 10].replace(',', '.').replace(' ', '')
+                    valor_str = lines[i + 14].replace(',', '.').replace(' ', '')
+                    if quantidade_str and valor_str:
+                        energia_scee_quantidade = float(quantidade_str)
+                        energia_scee_valor = float(valor_str)
+            except ValueError as e:
+                print(f"Error extracting Energia SCEE data: {e}")
+
+        elif "Energia compensada GD I" in lines[i]:
+            try:
+                if i + 10 < len(lines) and i + 14 < len(lines):
+                    quantidade_str = lines[i + 10].replace(',', '.').replace(' ', '')
+                    valor_str = lines[i + 14].replace(',', '.').replace(' ', '')
+                    if quantidade_str and valor_str:
+                        energia_compensada_quantidade = float(quantidade_str)
+                        energia_compensada_valor = float(valor_str)
+            except ValueError as e:
+                print(f"Error extracting Energia compensada data: {e}")
+
+        elif "Contrib Ilum Publica Municipal" in lines[i]:
+            try:
+                if i + 1 < len(lines):
+                    contrib_ilum_publica = float(lines[i + 1].replace(',', '.').replace(' ', ''))
+            except ValueError as e:
+                print(f"Error extracting Contrib Ilum Publica data: {e}")
 
 
     return (numero_cliente, mes_referencia, energia_eletrica_quantidade, energia_eletrica_valor, energia_scee_quantidade, energia_scee_valor, energia_compensada_quantidade, energia_compensada_valor, contrib_ilum_publica)
@@ -87,7 +130,7 @@ def insert_into_postgres(data):
 def process_pdfs(pdf_folder):
     id = 0
     for filename in os.listdir(pdf_folder):
-        id = id + 1
+        id += 1
         if filename.endswith(".pdf"):
             pdf_path = os.path.join(pdf_folder, filename)
             
