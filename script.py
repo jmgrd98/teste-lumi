@@ -1,43 +1,49 @@
 import os
 import psycopg2
 import re
-from pdfminer.high_level import extract_text, extract_pages
-from pdfminer.layout import LTTextContainer
+from pdfminer.high_level import extract_text
 
-def convert_pdf_to_html(pdf_path):
-    html_content = "<html><body>"
-    
-    for page_layout in extract_pages(pdf_path):
-        for element in page_layout:
-            if isinstance(element, LTTextContainer):
-                html_content += "<p>"
-                html_content += element.get_text()
-                html_content += "</p>"
-    
-    html_content += "</body></html>"
-    return html_content
+import os
+import psycopg2
+import re
+from pdfminer.high_level import extract_text
 
 def extract_data_from_pdf(pdf_path):
+    # Use pdfminer to extract text from PDF
     text = extract_text(pdf_path)
+    print(text)
+
+    # Split the text into lines
     lines = text.split('\n')
+
+    # Initialize variables to store extracted values
     value1 = None
     value2 = None
 
-    for line in lines:
-        if "Nº DO CLIENTE" in line:
-            value1_line = re.search(r'Nº DO CLIENTE.*?(\d+)', line)
-            if value1_line:
-                value1 = value1_line.group(1)
+    # Iterate through each line to find relevant information
+    for i in range(len(lines)):
+        # Check if the line contains "Nº DO CLIENTE" and extract the number below it
+        if "Nº DO CLIENTE" in lines[i]:
+            value1= lines[i + 1].strip()
+            # value1 = value1_line if value1_line.isdigit() else None
 
-        elif "Referente a" in line:
-            value2_match = re.search(r'Referente a\s+([A-Za-z]+/\d{4})', line)
-            if value2_match:
-                value2 = value2_match.group(1)
+        # Check if the line contains "Referente a" and extract the number below it
+        elif "Referente a" in lines[i]:
+            value2_line = lines[i + 1].strip()
+            match = re.search(r'\b([A-Za-z]{3}/\d{4})\b', value2_line)
+            if match:
+                value2 = match.group(1)
+            else:
+                value2 = None
 
+    # Convert value1 to int if it's a digit
     value1 = int(value1) if value1 and value1.isdigit() else None
+
     return (value1, value2)
 
+
 def insert_into_postgres(data):
+    # Connect to PostgreSQL
     connection = psycopg2.connect(
         user="postgres",
         password="root",
@@ -45,31 +51,39 @@ def insert_into_postgres(data):
         port="5432",
         database="lumi"
     )
+
     cursor = connection.cursor()
 
     try:
+        # Modify the SQL statement based on your table structure
         insert_query = "INSERT INTO faturas (cliente, mes_referencia) VALUES (%s, %s);"
+
+        # Execute the insert query for the single row of data
         cursor.execute(insert_query, data)
+
+        # Commit the transaction
         connection.commit()
     except Exception as e:
+        # Rollback the transaction in case of an exception
         connection.rollback()
         print(f"Error: {e}")
     finally:
+        # Close the cursor and connection in the finally block
         cursor.close()
         connection.close()
 
 def process_pdfs(pdf_folder):
+    # Loop through all PDF files in the specified folder
     for filename in os.listdir(pdf_folder):
         if filename.endswith(".pdf"):
             pdf_path = os.path.join(pdf_folder, filename)
+            
+            # Extract data from the PDF
             data = extract_data_from_pdf(pdf_path)
-            if data and all(data):
-                insert_into_postgres(data)
 
-            html_content = convert_pdf_to_html(pdf_path)
-            output_html_path = os.path.splitext(pdf_path)[0] + '.html'
-            with open(output_html_path, 'w', encoding='utf-8') as html_file:
-                html_file.write(html_content)
+            # Insert data into PostgreSQL
+            if data:
+                insert_into_postgres(data)
 
 if __name__ == "__main__":
     pdf_folder = "C:/Users/Zello/Downloads/Faturas - Teste Prático"
