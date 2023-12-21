@@ -13,7 +13,7 @@ def extract_data_from_pdf(pdf_path):
     text = extract_text(pdf_path)
 
     lines = text.split('\n')
-    print(text)
+    # print(text)
 
     numero_cliente = None
     mes_referencia = None
@@ -45,22 +45,17 @@ def extract_data_from_pdf(pdf_path):
 
         elif "Energia Elétrica" in lines[i]:
             try:
-                # Ensure there are enough lines following the current line
                 if i + 10 < len(lines) and i + 14 < len(lines):
-                    # Process and print the extracted strings
                     quantidade_str = lines[i + 10].replace(',', '.').replace(' ', '')
                     valor_str = lines[i + 14].replace(',', '.').replace(' ', '')
-
-                    # Check if strings are not empty
                     if quantidade_str and valor_str:
                         energia_eletrica_quantidade = float(quantidade_str)
                         energia_eletrica_valor = float(valor_str)
-                        print(f"Energia Elétrica Quantidade: {energia_eletrica_quantidade}, Valor: {energia_eletrica_valor}")
-                        # Break out of the loop after successful extraction
+                        print(f"Converted Energia Elétrica Valor (before insertion): {energia_eletrica_valor}")
                         break
-
             except ValueError as e:
                 print(f"Conversion error: {e}")
+
 
     return (numero_cliente, mes_referencia, energia_eletrica_quantidade, energia_eletrica_valor, energia_scee_quantidade, energia_scee_valor, energia_compensada_quantidade, energia_compensada_valor, contrib_ilum_publica)
 
