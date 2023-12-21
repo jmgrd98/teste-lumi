@@ -9,41 +9,63 @@ import re
 from pdfminer.high_level import extract_text
 
 def extract_data_from_pdf(pdf_path):
-    # Use pdfminer to extract text from PDF
+
     text = extract_text(pdf_path)
+
+    lines = text.split('\n')
     print(text)
 
-    # Split the text into lines
-    lines = text.split('\n')
+    numero_cliente = None
+    mes_referencia = None
+    energia_eletrica_quantidade = None
+    energia_eletrica_valor = None
+    energia_scee_quantidade = None
+    energia_scee_valor = None
+    energia_compensada_quantidade = None
+    energia_compensada_valor = None
+    contrib_ilum_publica = None
 
-    # Initialize variables to store extracted values
-    value1 = None
-    value2 = None
 
-    # Iterate through each line to find relevant information
     for i in range(len(lines)):
-        # Check if the line contains "Nº DO CLIENTE" and extract the number below it
         if "Nº DO CLIENTE" in lines[i]:
-            value1= lines[i + 1].strip()
-            # value1 = value1_line if value1_line.isdigit() else None
+            if i + 1 < len(lines):
+                numero_cliente_line = lines[i + 1].strip()
+                # print(f"Line after Nº DO CLIENTE: {numero_cliente_line}")
 
-        # Check if the line contains "Referente a" and extract the number below it
+                numero_cliente = "".join(numero_cliente_line.split())
+                # print(f"Extracted numero_cliente as string: {numero_cliente}")
+
         elif "Referente a" in lines[i]:
-            value2_line = lines[i + 1].strip()
-            match = re.search(r'\b([A-Za-z]{3}/\d{4})\b', value2_line)
+            mes_referencia = lines[i + 1].strip()
+            match = re.search(r'\b([A-Za-z]{3}/\d{4})\b', mes_referencia)
             if match:
-                value2 = match.group(1)
+                mes_referencia = match.group(1)
             else:
-                value2 = None
+                mes_referencia = None
 
-    # Convert value1 to int if it's a digit
-    value1 = int(value1) if value1 and value1.isdigit() else None
+        elif "Energia Elétrica" in lines[i]:
+            try:
+                # Ensure there are enough lines following the current line
+                if i + 10 < len(lines) and i + 14 < len(lines):
+                    # Process and print the extracted strings
+                    quantidade_str = lines[i + 10].replace(',', '.').replace(' ', '')
+                    valor_str = lines[i + 14].replace(',', '.').replace(' ', '')
 
-    return (value1, value2)
+                    # Check if strings are not empty
+                    if quantidade_str and valor_str:
+                        energia_eletrica_quantidade = float(quantidade_str)
+                        energia_eletrica_valor = float(valor_str)
+                        print(f"Energia Elétrica Quantidade: {energia_eletrica_quantidade}, Valor: {energia_eletrica_valor}")
+                        # Break out of the loop after successful extraction
+                        break
+
+            except ValueError as e:
+                print(f"Conversion error: {e}")
+
+    return (numero_cliente, mes_referencia, energia_eletrica_quantidade, energia_eletrica_valor, energia_scee_quantidade, energia_scee_valor, energia_compensada_quantidade, energia_compensada_valor, contrib_ilum_publica)
 
 
 def insert_into_postgres(data):
-    # Connect to PostgreSQL
     connection = psycopg2.connect(
         user="postgres",
         password="root",
@@ -55,35 +77,30 @@ def insert_into_postgres(data):
     cursor = connection.cursor()
 
     try:
-        # Modify the SQL statement based on your table structure
-        insert_query = "INSERT INTO faturas (cliente, mes_referencia) VALUES (%s, %s);"
+        insert_query = "INSERT INTO faturas (id, numero_cliente, mes_referencia, energia_eletrica_quantidade, energia_eletrica_valor, energia_scee_quantidade, energia_scee_valor, energia_compensada_quantidade, energia_compensada_valor, contrib_ilum_publica) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
 
-        # Execute the insert query for the single row of data
         cursor.execute(insert_query, data)
 
-        # Commit the transaction
         connection.commit()
     except Exception as e:
-        # Rollback the transaction in case of an exception
         connection.rollback()
         print(f"Error: {e}")
     finally:
-        # Close the cursor and connection in the finally block
         cursor.close()
         connection.close()
 
 def process_pdfs(pdf_folder):
-    # Loop through all PDF files in the specified folder
+    id = 0
     for filename in os.listdir(pdf_folder):
+        id = id + 1
         if filename.endswith(".pdf"):
             pdf_path = os.path.join(pdf_folder, filename)
             
-            # Extract data from the PDF
             data = extract_data_from_pdf(pdf_path)
 
-            # Insert data into PostgreSQL
             if data:
-                insert_into_postgres(data)
+                data_with_id = (id,) + data
+                insert_into_postgres(data_with_id)
 
 if __name__ == "__main__":
     pdf_folder = "C:/Users/Zello/Downloads/Faturas - Teste Prático"
