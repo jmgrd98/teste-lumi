@@ -25,7 +25,7 @@ def extract_data_from_pdf(pdf_path):
     text = extract_text(pdf_path)
 
     lines = text.split('\n')
-    # print(text)
+    print(text)
 
     numero_cliente = None
     mes_referencia = None
@@ -37,18 +37,26 @@ def extract_data_from_pdf(pdf_path):
     energia_compensada_valor = None
     contrib_ilum_publica = None
 
-    for row in table_data:
-        print('ROW', row)
-        if "Energia Elétrica" in row[0]:
-            energia_eletrica_quantidade = row[2]
-            energia_eletrica_valor = row[3]
+    # for row in table_data:
+    #         if row:  # Check if row is not None
+    #             if row[0] and "Energia Elétrica" in row[0]:
+    #                 print('ROW', row)
+    #                 energia_eletrica_quantidade = row[2]
+    #                 energia_eletrica_valor = row[3]
+    #             # Additional logic for other rows
+    #             if row[0] and "Contrib Ilum Publica Municipal" in row[0]:
+    #                 try:
+    #                     contrib_ilum_publica = float(row[3].replace(',', '.'))
+    #                 except ValueError as e:
+    #                     print(f"Error extracting Contrib Ilum Publica data: {e}")
+
 
 
     for i in range(len(lines)):
         if "Nº DO CLIENTE" in lines[i]:
             if i + 1 < len(lines):
                 numero_cliente_line = lines[i + 1].strip()
-                numero_cliente = "".join(numero_cliente_line.split())
+                numero_cliente = numero_cliente_line.split()[0]
 
         elif "Referente a" in lines[i]:
             mes_referencia = lines[i + 1].strip()
