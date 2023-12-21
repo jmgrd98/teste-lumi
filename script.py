@@ -1,43 +1,75 @@
 import os
 import psycopg2
-from pdfminer.high_level import extract_text
+import re
+from pdfminer.high_level import extract_text, extract_pages
+from pdfminer.layout import LTTextContainer
+
+def convert_pdf_to_html(pdf_path):
+    html_content = "<html><body>"
+    
+    for page_layout in extract_pages(pdf_path):
+        for element in page_layout:
+            if isinstance(element, LTTextContainer):
+                html_content += "<p>"
+                html_content += element.get_text()
+                html_content += "</p>"
+    
+    html_content += "</body></html>"
+    return html_content
 
 def extract_data_from_pdf(pdf_path):
-    # Use pdfminer to extract text from PDF
     text = extract_text(pdf_path)
-    # Add your logic to extract specific data from the text
+    lines = text.split('\n')
+    value1 = None
+    value2 = None
+
+    for line in lines:
+        if "Nº DO CLIENTE" in line:
+            value1_line = re.search(r'Nº DO CLIENTE.*?(\d+)', line)
+            if value1_line:
+                value1 = value1_line.group(1)
+
+        elif "Referente a" in line:
+            value2_match = re.search(r'Referente a\s+([A-Za-z]+/\d{4})', line)
+            if value2_match:
+                value2 = value2_match.group(1)
+
+    value1 = int(value1) if value1 and value1.isdigit() else None
+    return (value1, value2)
 
 def insert_into_postgres(data):
-    # Connect to PostgreSQL
     connection = psycopg2.connect(
-        user="your_username",
-        password="your_password",
-        host="your_host",
-        port="your_port",
-        database="your_database"
+        user="postgres",
+        password="root",
+        host="localhost",
+        port="5432",
+        database="lumi"
     )
-
     cursor = connection.cursor()
 
-    # Modify the SQL statement based on your table structure
-    insert_query = "INSERT INTO your_table (column1, column2, ...) VALUES (%s, %s, ...);"
-
-    # Execute the insert query for each row of data
-    for row in data:
-        cursor.execute(insert_query, row)
-
-    # Commit the transaction and close the connection
-    connection.commit()
-    cursor.close()
-    connection.close()
+    try:
+        insert_query = "INSERT INTO faturas (cliente, mes_referencia) VALUES (%s, %s);"
+        cursor.execute(insert_query, data)
+        connection.commit()
+    except Exception as e:
+        connection.rollback()
+        print(f"Error: {e}")
+    finally:
+        cursor.close()
+        connection.close()
 
 def process_pdfs(pdf_folder):
-    # Loop through all PDF files in the specified folder
     for filename in os.listdir(pdf_folder):
         if filename.endswith(".pdf"):
             pdf_path = os.path.join(pdf_folder, filename)
             data = extract_data_from_pdf(pdf_path)
-            insert_into_postgres(data)
+            if data and all(data):
+                insert_into_postgres(data)
+
+            html_content = convert_pdf_to_html(pdf_path)
+            output_html_path = os.path.splitext(pdf_path)[0] + '.html'
+            with open(output_html_path, 'w', encoding='utf-8') as html_file:
+                html_file.write(html_content)
 
 if __name__ == "__main__":
     pdf_folder = "C:/Users/Zello/Downloads/Faturas - Teste Prático"
