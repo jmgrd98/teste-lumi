@@ -19,6 +19,7 @@ def extract_table_data(pdf_path):
         
 
 def extract_data_from_pdf(pdf_path):
+    global id
     table_data = extract_table_data(pdf_path)
     # print(table_data)
 
@@ -71,6 +72,9 @@ def extract_data_from_pdf(pdf_path):
                 if i + 10 < len(lines) and i + 14 < len(lines):
                     quantidade_str = lines[i + 10].replace(',', '.').replace(' ', '')
                     valor_str = lines[i + 14].replace(',', '.').replace(' ', '')
+                    if id == 8:
+                        quantidade_str = lines[i + 11].replace(',', '.').replace(' ', '')
+                        valor_str = lines[i + 15].replace(',', '.').replace(' ', '')
                     if quantidade_str and valor_str:
                         energia_eletrica_quantidade = float(quantidade_str)
                         energia_eletrica_valor = float(valor_str)
@@ -83,6 +87,9 @@ def extract_data_from_pdf(pdf_path):
                 if i + 10 < len(lines) and i + 14 < len(lines):
                     quantidade_str = lines[i + 10].replace(',', '.').replace(' ', '')
                     valor_str = lines[i + 14].replace(',', '.').replace(' ', '')
+                    if id == 8:
+                        quantidade_str = lines[i + 11].replace(',', '.').replace(' ', '')
+                        valor_str = lines[i + 15].replace(',', '.').replace(' ', '')
                     if quantidade_str and valor_str:
                         energia_scee_quantidade = float(quantidade_str)
                         energia_scee_valor = float(valor_str)
@@ -94,6 +101,9 @@ def extract_data_from_pdf(pdf_path):
                 if i + 10 < len(lines) and i + 14 < len(lines):
                     quantidade_str = lines[i + 10].replace(',', '.').replace(' ', '')
                     valor_str = lines[i + 14].replace(',', '.').replace(' ', '')
+                    if id == 8:
+                        quantidade_str = lines[i + 11].replace(',', '.').replace(' ', '')
+                        valor_str = lines[i + 15].replace(',', '.').replace(' ', '')
                     if quantidade_str and valor_str:
                         energia_compensada_quantidade = float(quantidade_str)
                         energia_compensada_valor = float(valor_str)
@@ -102,8 +112,10 @@ def extract_data_from_pdf(pdf_path):
 
         elif "Contrib Ilum Publica Municipal" in lines[i]:
             try:
-                if i + 1 < len(lines):
-                    contrib_ilum_publica = float(lines[i + 1].replace(',', '.').replace(' ', ''))
+                if i + 15 < len(lines):
+                    contrib_ilum_publica = float(lines[i + 15].replace(',', '.').replace(' ', ''))
+                    if id == 8:
+                        contrib_ilum_publica = float(lines[i + 16].replace(',', '.').replace(' ', ''))
             except ValueError as e:
                 print(f"Error extracting Contrib Ilum Publica data: {e}")
 
@@ -135,8 +147,9 @@ def insert_into_postgres(data):
         cursor.close()
         connection.close()
 
+id = 0
 def process_pdfs(pdf_folder):
-    id = 0
+    global id
     for filename in os.listdir(pdf_folder):
         id += 1
         if filename.endswith(".pdf"):
@@ -149,5 +162,5 @@ def process_pdfs(pdf_folder):
                 insert_into_postgres(data_with_id)
 
 if __name__ == "__main__":
-    pdf_folder = "C:/Users/Zello/Downloads/Faturas - Teste Prático"
+    pdf_folder = "./faturas"
     process_pdfs(pdf_folder)
