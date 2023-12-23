@@ -15,7 +15,6 @@ def extract_table_data(pdf_path):
 
 def extract_data_from_pdf(pdf_path):
     global id
-    table_data = extract_table_data(pdf_path)
 
     text = extract_text(pdf_path)
     lines = text.split('\n')
