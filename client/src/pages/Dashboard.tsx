@@ -7,9 +7,9 @@ const Dashboard = () => {
 
     const fetchFaturas = async () => {
         try {
-            const response = await axios.get('http://localhost:8080/');
-            setFaturas(response.data); // Make sure to use response.data
-        } catch (error) {
+            const response = await axios.get('http://localhost:8080/faturas');
+            setFaturas(response.data);
+        } catch (error: any) {
             console.error('Error fetching faturas:', error);
         }
     };
