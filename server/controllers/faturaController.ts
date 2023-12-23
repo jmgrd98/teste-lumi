@@ -5,7 +5,7 @@ export async function getAllFaturas(req: Request, res: Response) {
     try {
         const faturas = await FaturaService.getAllFaturas();
         res.json(faturas);
-    } catch (error) {
+    } catch (error: any) {
         res.status(500).send(error.message);
     }
 }
@@ -19,7 +19,7 @@ export async function getFaturaById(req: Request, res: Response) {
         } else {
             res.status(404).send('Fatura not found');
         }
-    } catch (error) {
+    } catch (error: any) {
         res.status(500).send(error.message);
     }
 }
@@ -33,7 +33,7 @@ export async function getFaturaByNumeroCliente(req: Request, res: Response) {
         } else {
             res.status(404).send('Fatura not found for the given Numero Cliente');
         }
-    } catch (error) {
+    } catch (error: any) {
         res.status(500).send(error.message);
     }
 }
