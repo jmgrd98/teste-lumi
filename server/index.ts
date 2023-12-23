@@ -5,7 +5,6 @@ const app = express();
 const port = 8080;
 const prisma = new PrismaClient();
 
-// Route for getting all faturas
 app.get('/', async (req: Request, res: Response) => {
     try {
         const faturas = await prisma.faturas.findMany();
@@ -16,7 +15,6 @@ app.get('/', async (req: Request, res: Response) => {
     }
 });
 
-// Route for getting a single fatura by id
 app.get('/fatura/:id', async (req: Request, res: Response) => {
     const id = parseInt(req.params.id);
     if (isNaN(id)) {
@@ -39,7 +37,6 @@ app.get('/fatura/:id', async (req: Request, res: Response) => {
     }
 });
 
-// Route for getting a fatura by numero_cliente
 app.get('/fatura/cliente/:numero_cliente', async (req: Request, res: Response) => {
     const numero_cliente = req.params.numero_cliente;
 
