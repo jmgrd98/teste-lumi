@@ -71,10 +71,12 @@ def extract_data_from_pdf(pdf_path):
                     if id == 8:
                         quantidade_str = lines[i + 11].replace(',', '.').replace(' ', '')
                         valor_str = lines[i + 15].replace(',', '.').replace(' ', '')
-                    if id == 15 or id == 16:
-                        print(text)
+                    if id == 15:
                         quantidade_str = lines[i + 12].replace(',', '.').replace(' ', '')
                         valor_str = lines[i + 16].replace(',', '.').replace(' ', '')
+                    if id == 16:
+                        quantidade_str = lines[i + 13].replace(',', '.').replace(' ', '')
+                        valor_str = lines[i + 17].replace(',', '.').replace(' ', '')
                     if quantidade_str and valor_str:
                         energia_eletrica_quantidade = float(quantidade_str)
                         energia_eletrica_valor = float(valor_str)
