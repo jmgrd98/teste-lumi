@@ -2,11 +2,7 @@ import os
 import psycopg2
 import re
 from pdfminer.high_level import extract_text
-import os
-import psycopg2
-import re
 import pdfplumber
-from pdfminer.high_level import extract_text
 
 def extract_table_data(pdf_path):
     with pdfplumber.open(pdf_path) as pdf:
@@ -26,7 +22,7 @@ def extract_data_from_pdf(pdf_path):
     text = extract_text(pdf_path)
 
     lines = text.split('\n')
-    print(text)
+    # print(text)
 
     numero_cliente = None
     mes_referencia = None
@@ -69,12 +65,16 @@ def extract_data_from_pdf(pdf_path):
 
         elif "Energia Elétrica" in lines[i]:
             try:
-                if i + 10 < len(lines) and i + 14 < len(lines):
+                if i + 11 < len(lines) and i + 15 < len(lines):
                     quantidade_str = lines[i + 10].replace(',', '.').replace(' ', '')
                     valor_str = lines[i + 14].replace(',', '.').replace(' ', '')
                     if id == 8:
                         quantidade_str = lines[i + 11].replace(',', '.').replace(' ', '')
                         valor_str = lines[i + 15].replace(',', '.').replace(' ', '')
+                    if id == 15 or id == 16:
+                        print(text)
+                        quantidade_str = lines[i + 12].replace(',', '.').replace(' ', '')
+                        valor_str = lines[i + 16].replace(',', '.').replace(' ', '')
                     if quantidade_str and valor_str:
                         energia_eletrica_quantidade = float(quantidade_str)
                         energia_eletrica_valor = float(valor_str)
@@ -84,9 +84,11 @@ def extract_data_from_pdf(pdf_path):
 
         elif "Energia SCEE s/ ICMS" in lines[i]:
             try:
-                if i + 10 < len(lines) and i + 14 < len(lines):
+                if i + 11 < len(lines) and i + 15 < len(lines):
                     quantidade_str = lines[i + 10].replace(',', '.').replace(' ', '')
+                    print(quantidade_str)
                     valor_str = lines[i + 14].replace(',', '.').replace(' ', '')
+                    print(valor_str)
                     if id == 8:
                         quantidade_str = lines[i + 11].replace(',', '.').replace(' ', '')
                         valor_str = lines[i + 15].replace(',', '.').replace(' ', '')
@@ -98,7 +100,7 @@ def extract_data_from_pdf(pdf_path):
 
         elif "Energia compensada GD I" in lines[i]:
             try:
-                if i + 10 < len(lines) and i + 14 < len(lines):
+                if i + 11 < len(lines) and i + 15 < len(lines):
                     quantidade_str = lines[i + 10].replace(',', '.').replace(' ', '')
                     valor_str = lines[i + 14].replace(',', '.').replace(' ', '')
                     if id == 8:
