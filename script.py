@@ -85,7 +85,7 @@ def extract_data_from_pdf(pdf_path):
         if "Energia compensada GD I" in lines[i] and not energia_compensada_quantidade:
             try:
                 compensada_quantidade_str = lines[i + 10].replace(',', '.').replace(' ', '')
-                compensada_valor_str = lines[i + 14].replace(',', '.').replace(' ', '')
+                compensada_valor_str = lines[i + 18].replace(',', '.').replace(' ', '')
                 if id == 8:
                     compensada_quantidade_str = lines[i + 11].replace(',', '.').replace(' ', '')
                     compensada_valor_str = lines[i + 19].replace(',', '.').replace(' ', '')
@@ -104,6 +104,12 @@ def extract_data_from_pdf(pdf_path):
         if "Contrib Ilum Publica Municipal" in lines[i] and not contrib_ilum_publica:
             try:
                 contrib_str = lines[i + 15].replace(',', '.').replace(' ', '')
+                if id == 8:
+                    contrib_str = lines[i + 16].replace(',', '.').replace(' ', '')
+                if id == 15:
+                    contrib_str = lines[i + 17].replace(',', '.').replace(' ', '')
+                if id == 16:
+                    contrib_str = lines[i + 18].replace(',', '.').replace(' ', '')
                 if contrib_str:
                     contrib_ilum_publica = float(contrib_str)
             except ValueError as e:
