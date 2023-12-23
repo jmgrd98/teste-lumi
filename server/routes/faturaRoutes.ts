@@ -3,8 +3,8 @@ import * as FaturaController from '../controllers/faturaController';
 
 const router = express.Router();
 
-router.get('/faturas', FaturaController.getAllFaturas);
-router.get('/faturas/:id', FaturaController.getFaturaById);
-router.get('/faturas/numeroCliente/:numeroCliente', FaturaController.getFaturaByNumeroCliente);
+router.get('/', FaturaController.getAllFaturas);
+router.get('/fatura/:id', FaturaController.getFaturaById);
+router.get('/cliente/:numero_cliente', FaturaController.getFaturaByNumeroCliente);
 
 export default router;

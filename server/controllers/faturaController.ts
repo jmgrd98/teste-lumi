@@ -26,7 +26,7 @@ export async function getFaturaById(req: Request, res: Response) {
 
 export async function getFaturaByNumeroCliente(req: Request, res: Response) {
     try {
-        const numeroCliente = req.params.numeroCliente;
+        const numeroCliente = req.params.numero_cliente;
         const fatura = await FaturaService.findByNumeroCliente(numeroCliente);
         if (fatura.length > 0) {
             res.json(fatura);
