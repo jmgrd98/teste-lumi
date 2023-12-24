@@ -36,7 +36,12 @@ const Library = () => {
         <Sidebar/>
         <section className='flex flex-col gap-10 p-10 justify-center items-center w-full'>
          <h1>Faturas</h1>
-         <input type='text' placeholder='Pesquise um número de cliente' onChange={(e) => searchFaturas(e.target.value)} />
+         <input
+            type='text'
+            placeholder='Pesquise um número de cliente'
+            onChange={(e) => searchFaturas(e.target.value)} 
+            className='p-2 w-1/2 rounded border-2 border-gray-500'
+            />
             <table className='w-full'>
                 <thead className='w-full text-center'>
                     <tr>
@@ -56,6 +61,11 @@ const Library = () => {
                             <td>{fatura.mes_referencia}</td>
                             <td>{fatura.energia_eletrica_quantidade}</td>
                             <td>{fatura.energia_eletrica_valor}</td>
+                            <td>
+                                <a href={`http://localhost:8080/faturas/download/${fatura.id}`} download>
+                                    Download
+                                </a>
+                            </td>
                         </tr>
                     ))}
                 </tbody>

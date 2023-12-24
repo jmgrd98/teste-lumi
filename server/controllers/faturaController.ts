@@ -37,3 +37,19 @@ export async function getFaturaByNumeroCliente(req: Request, res: Response) {
         res.status(500).send(error.message);
     }
 }
+
+export async function downloadFaturaFile(req: Request, res: Response) {
+    try {
+        const id = parseInt(req.params.id);
+        const fatura = await FaturaService.getFaturaById(id);
+
+        if (fatura) {
+            res.download(`./faturas/fatura-${fatura.id}`);
+        } else {
+            res.status(404).send('File not found');
+        }
+    } catch (error: any) {
+        console.error(error);
+        res.status(500).send('Server error');
+    }
+}
