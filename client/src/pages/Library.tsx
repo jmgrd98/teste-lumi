@@ -1,10 +1,22 @@
-import {useState, useEffect} from 'react'
-import Sidebar from '../components/Sidebar'
+import {useState, useEffect} from 'react';
+import Sidebar from '../components/Sidebar';
 import axios from 'axios';
-import { Button, Table, Space } from 'antd';
+import { Table } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+import { Fatura } from '../models/Fatura';
+import { FiMenu } from 'react-icons/fi';
+import { motion } from 'framer-motion';
+
 
 const Library = () => {
     const [faturas, setFaturas] = useState([]);
+    const dispatch = useDispatch();
+    const isSidebarOpen = useSelector((state: any) => state.isSidebarOpen);
+
+    const toggleSidebar = () => {
+        dispatch({ type: 'TOGGLE_SIDEBAR' });
+    };
+
 
     const fetchFaturas = async () => {
         try {
@@ -46,10 +58,13 @@ const Library = () => {
         {
             title: 'Download',
             key: 'download',
-            render: (_, record) => (
-                <a href={`http://localhost:8080/faturas/download/${record.id}`} download>
+            render: (_: any, record: Fatura) => (
+                <motion.a
+
+                    className='bg-[#0dad62] text-white rounded p-2 hover:text-white'
+                    href={`http://localhost:8080/faturas/download/${record.id}`} download>
                     Download
-                </a>
+                </motion.a>
             )
         }
     ];
@@ -61,7 +76,10 @@ const Library = () => {
 
   return (
     <main className='w-screen flex'>
-        <Sidebar/>
+        <div className={`fixed top-0 left-0 p-4 z-10 ${isSidebarOpen ? 'hidden' : 'block'}`} onClick={toggleSidebar}>
+                <FiMenu size={24} className="cursor-pointer" />
+            </div>
+        {isSidebarOpen && <Sidebar />}
         <section className='flex flex-col gap-10 p-10 justify-center items-center w-full'>
          <h1>Faturas</h1>
          <input

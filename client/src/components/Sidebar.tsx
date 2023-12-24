@@ -2,46 +2,32 @@ import { Link, useLocation } from "react-router-dom";
 import { useState } from 'react';
 import { FiMenu, FiX } from 'react-icons/fi';
 import lumi from '../assets/lumi-logo.png';
-import { easeIn, easeInOut, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useDispatch, useSelector } from "react-redux";
 
 const Sidebar = () => {
   const location = useLocation();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const dispatch = useDispatch();
+  const isSidebarOpen = useSelector((state: any) => state.isSidebarOpen);
+
+  const toggleSidebar = () => {
+    dispatch({ type: 'TOGGLE_SIDEBAR' });
+  };
 
   const isActive = (path: string) => {
     return location.pathname === path;
-  };
-
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
   };
 
   const sidebarVariants = {
     open: { 
       x: 0,
       opacity: 1,
-      transition: { type: "smooth", stiffness: 100, easeInOut }
+      transition: { type: "tween", duration: 0.5 }
     },
     closed: { 
       x: '-100%', 
       opacity: 0,
-      transition: { type: "smooth", stiffness: 100, easeInOut }
-    },
-  };
-
-  const listItemVariants = {
-    open: {
-      x: 0,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        delay: 0.2
-      }
-    },
-    closed: {
-      x: -50,
-      opacity: 0
+      transition: { type: "tween", duration: 0.5 }
     },
   };
 
@@ -56,6 +42,7 @@ const Sidebar = () => {
         variants={sidebarVariants}
         initial="closed"
         animate={isSidebarOpen ? "open" : "closed"}
+        exit="closed" 
       >
         <div className="flex justify-end">
           <FiX size={24} onClick={toggleSidebar} className="cursor-pointer" />
@@ -63,16 +50,16 @@ const Sidebar = () => {
         <img src={lumi} alt='Lumi logo' className='w-[170px] h-[100px] mb-10' />
         <nav>
           <ul className="flex flex-col gap-5">
-            <motion.li variants={listItemVariants} initial="closed" animate={isSidebarOpen ? "open" : "closed"}>
-              <Link to="/" className={isActive('/') ? "bg-[#0dad62] text-white p-2 rounded" : ""} onClick={toggleSidebar}>
+            <li>
+              <Link to="/" className={isActive('/') ? "bg-[#0dad62] text-white p-2 rounded" : ""}>
                 Dashboard
               </Link>
-            </motion.li>
-            <motion.li variants={listItemVariants} initial="closed" animate={isSidebarOpen ? "open" : "closed"}>
-              <Link to="/library" className={isActive('/library') ? "bg-[#0dad62] text-white p-2 rounded" : ""} onClick={toggleSidebar}>
+            </li>
+            <li>
+              <Link to="/library" className={isActive('/library') ? "bg-[#0dad62] text-white p-2 rounded" : ""}>
                 Biblioteca de faturas
               </Link>
-            </motion.li>
+            </li>
           </ul>
         </nav>
       </motion.aside>

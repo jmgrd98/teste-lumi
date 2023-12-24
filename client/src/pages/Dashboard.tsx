@@ -3,12 +3,21 @@ import axios from 'axios';
 import Sidebar from '../components/Sidebar';
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 import { Fatura } from '../models/Fatura';
+import { FiMenu } from 'react-icons/fi';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Dashboard = () => {
     const [faturas, setFaturas] = useState([]);
     const [selectedNumeroCliente, setSelectedNumeroCliente] = useState('');
     const [energyData, setEnergyData] = useState<any[]>([]);
     const [monetaryData, setMonetaryData] = useState<any[]>([]);
+
+    const dispatch = useDispatch();
+    const isSidebarOpen = useSelector((state: any) => state.isSidebarOpen);
+
+    const toggleSidebar = () => {
+        dispatch({ type: 'TOGGLE_SIDEBAR' });
+    };
 
     useEffect(() => {
         const fetchFaturas = async () => {
@@ -56,7 +65,10 @@ const Dashboard = () => {
 
     return (
         <main className='w-screen flex'>
-            <Sidebar />
+            <div className={`fixed top-0 left-0 p-4 z-10 ${isSidebarOpen ? 'hidden' : 'block'}`} onClick={toggleSidebar}>
+                <FiMenu size={24} className="cursor-pointer" />
+            </div>
+            {isSidebarOpen && <Sidebar />}
             <section className='flex flex-col p-10 gap-10 justify-center items-center w-full'>
                 <h1>Dashboard</h1>
                 <select 
@@ -73,7 +85,7 @@ const Dashboard = () => {
                 <div className='flex gap-5 text-center items-center justify-center'>
                     <div className='flex flex-col gap-3 text-center w-full items-center'>
                         <h2 className='text-xl font-bold'>Consumo de Energia Elétrica (KWh)</h2>
-                        <LineChart width={500} height={250} data={energyData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                        <LineChart width={550} height={275} data={energyData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis dataKey="name" />
                             <YAxis />
@@ -85,7 +97,7 @@ const Dashboard = () => {
                     </div>
                     <div className='flex flex-col gap-3 text-center w-full items-center'>
                         <h2 className='text-xl font-bold'>Valores Monetários (R$)</h2>
-                        <LineChart width={500} height={250} data={monetaryData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                        <LineChart width={550} height={275} data={monetaryData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis dataKey="name" />
                             <YAxis />
