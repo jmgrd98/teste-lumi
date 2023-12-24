@@ -1,6 +1,6 @@
-# Nome do Projeto
+# Teste técnico para a empresa Lumi
 
-Descrição breve do seu projeto.
+Olá, pessoal! Esse é o projeto que eu desenvolvi com muito carinho e dedicação para o teste para o processo seletivo da Lumi para Desenvolvedor Fullstack Pleno.
 
 ## Tecnologias Utilizadas
 
@@ -31,5 +31,17 @@ Descrição breve do seu projeto.
    npm install
    # ou
    yarn install
+3. Configure as variáveis de ambiente no arquivo '.env'.
+4. Rode as migrações do Prisma:
+   ```bash
+   npx prisma migrate dev
+5. Execute o script.py para realizar a raspagem dos dados e salvá-los no banco de dados PostgreSQL:
+   ```bash
+   python script.py
+6. Inicie o servidor:
+   ```bash
+   npm run start
+   # ou
+   yarn start
    
 
