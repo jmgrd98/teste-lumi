@@ -21,18 +21,41 @@ const Dashboard = () => {
         fetchFaturas();
     }, []);
 
+    const calculateConsumoEnergiaElétrica = (fatura: any) => {
+        const energia_eletrica_quantidade = fatura.energia_eletrica_quantidade;
+        const energia_scee_quantidade = fatura.energia_scee_quantidade;
+    
+        return energia_eletrica_quantidade + energia_scee_quantidade;
+    }
+
   return (
     <main className='w-screen flex'>
     <Sidebar />
     <section className='flex flex-col p-10 gap-10 justify-center items-center w-full'>
     <h1>Dashboard</h1>
 
-    <LineChart width={600} height={300} data={data}>
-    <Line type="monotone" dataKey="uv" stroke="#8884d8" />
-    <CartesianGrid stroke="#ccc" />
-    <XAxis dataKey="name" />
-    <YAxis />
-  </LineChart>
+    <section className='flex flex-wrap gap-10'>
+
+    <div className='flex flex-col gap-3'>
+        <h2 className='text-xl font-bold'>Consumo de Energia Elétrica</h2>
+        <LineChart width={600} height={300} data={data}>
+            <Line type="monotone" dataKey="uv" stroke="#8884d8" />
+            <CartesianGrid stroke="#ccc" />
+            <XAxis dataKey="name" />
+            <YAxis />
+        </LineChart>
+        </div>
+        <div className='flex flex-col gap-3'>
+        <h2 className='text-xl font-bold'>Energia Compensada</h2>
+        </div>
+        <div className='flex flex-col gap-3'>
+        <h2 className='text-xl font-bold'>Valor total sem GD</h2>
+        </div>
+        <div className='flex flex-col gap-3'>
+        <h2 className='text-xl font-bold'>Economia GD</h2>
+        </div>
+
+  </section>
   </section>
     </main>
   )
