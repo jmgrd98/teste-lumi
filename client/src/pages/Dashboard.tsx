@@ -73,7 +73,7 @@ const Dashboard = () => {
                 <div className='flex gap-5 text-center items-center justify-center'>
                     <div className='flex flex-col gap-3 text-center w-full items-center'>
                         <h2 className='text-xl font-bold'>Consumo de Energia Elétrica (KWh)</h2>
-                        <LineChart width={400} height={200} data={energyData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                        <LineChart width={500} height={250} data={energyData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis dataKey="name" />
                             <YAxis />
@@ -85,7 +85,7 @@ const Dashboard = () => {
                     </div>
                     <div className='flex flex-col gap-3 text-center w-full items-center'>
                         <h2 className='text-xl font-bold'>Valores Monetários (R$)</h2>
-                        <LineChart width={400} height={200} data={monetaryData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                        <LineChart width={500} height={250} data={monetaryData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis dataKey="name" />
                             <YAxis />
