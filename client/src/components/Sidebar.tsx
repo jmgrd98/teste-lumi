@@ -1,12 +1,11 @@
-import { Link } from "react-router-dom";
-import { useState } from 'react';
+import { Link, useLocation } from "react-router-dom";
 import lumi from '../assets/lumi-logo.png';
 
 const Sidebar = () => {
-  const [isActive, setIsActive] = useState('dashboard');
+  const location = useLocation();
 
-  const handleSetActive = (page) => {
-    setIsActive(page);
+  const isActive = (path: string) => {
+    return location.pathname === path;
   };
 
   return (
@@ -17,8 +16,7 @@ const Sidebar = () => {
           <li>
             <Link
               to="/"
-              onClick={() => handleSetActive('dashboard')}
-              className="text-xl"
+              className={isActive('/') ? "bg-[#0dad62] text-white p-2 rounded" : ""}
             >
               Dashboard
             </Link>
@@ -26,8 +24,7 @@ const Sidebar = () => {
           <li>
             <Link
               to="/library"
-              onClick={() => handleSetActive('library')}
-              className="text-xl"
+              className={isActive('/library') ? "bg-[#0dad62] text-white p-2 rounded" : ""}
             >
               Biblioteca de faturas
             </Link>
