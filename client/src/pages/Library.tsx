@@ -44,16 +44,6 @@ const Library = () => {
             key: 'mes_referencia'
         },
         {
-            title: 'Quantidade Energia Elétrica',
-            dataIndex: 'energia_eletrica_quantidade',
-            key: 'energia_eletrica_quantidade'
-        },
-        {
-            title: 'Valor Energia Elétrica',
-            dataIndex: 'energia_eletrica_valor',
-            key: 'energia_eletrica_valor'
-        },
-        {
             title: 'Download',
             key: 'download',
             render: (_, record) => (
@@ -80,7 +70,7 @@ const Library = () => {
             onChange={(e) => searchFaturas(e.target.value)} 
             className='p-2 w-1/2 rounded border-2 border-gray-500'
             />
-            <Table dataSource={faturas} columns={columns}  pagination={paginationConfig} />
+            <Table className='w-full' dataSource={faturas} columns={columns}  pagination={paginationConfig} />
     </section>
     </main>
   )
