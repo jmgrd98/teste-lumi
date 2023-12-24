@@ -13,6 +13,10 @@ export async function getFaturaById(id: number) {
 
 export async function findByNumeroCliente(numeroCliente: string) {
     return await prisma.faturas.findMany({
-        where: { numero_cliente: numeroCliente },
+        where: {
+            numero_cliente: {
+                contains: numeroCliente,
+            },
+        },
     });
 }

@@ -18,11 +18,25 @@ const Library = () => {
         fetchFaturas();
     }, []);
 
+    const searchFaturas = async (numeroCliente: string) => {
+        if (numeroCliente) {
+            try {
+                const response = await axios.get(`http://localhost:8080/faturas/cliente/${numeroCliente}`);
+                setFaturas(response.data);
+            } catch (error) {
+                console.error(error);
+            }
+        } else {
+            fetchFaturas();
+        }
+    };
+
   return (
     <main className='w-screen flex'>
         <Sidebar/>
         <section className='flex flex-col gap-10 p-10 justify-center items-center w-full'>
          <h1>Faturas</h1>
+         <input type='text' placeholder='Pesquise um número de cliente' onChange={(e) => searchFaturas(e.target.value)} />
             <table className='w-full'>
                 <thead className='w-full text-center'>
                     <tr>
@@ -31,6 +45,7 @@ const Library = () => {
                         <th>Mês Referência</th>
                         <th>Quantidade Energia Elétrica</th>
                         <th>Valor Energia Elétrica</th>
+                        <th>Download</th>
                     </tr>
                 </thead>
                 <tbody className='w-full text-center'>
