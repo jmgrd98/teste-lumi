@@ -1,6 +1,7 @@
 import {useState, useEffect} from 'react'
 import Sidebar from '../components/Sidebar'
 import axios from 'axios';
+import { Button, Table, Space } from 'antd';
 
 const Library = () => {
     const [faturas, setFaturas] = useState([]);
@@ -31,6 +32,43 @@ const Library = () => {
         }
     };
 
+    const columns = [
+        {
+            title: 'Número Cliente',
+            dataIndex: 'numero_cliente',
+            key: 'numero_cliente'
+        },
+        {
+            title: 'Mês Referência',
+            dataIndex: 'mes_referencia',
+            key: 'mes_referencia'
+        },
+        {
+            title: 'Quantidade Energia Elétrica',
+            dataIndex: 'energia_eletrica_quantidade',
+            key: 'energia_eletrica_quantidade'
+        },
+        {
+            title: 'Valor Energia Elétrica',
+            dataIndex: 'energia_eletrica_valor',
+            key: 'energia_eletrica_valor'
+        },
+        {
+            title: 'Download',
+            key: 'download',
+            render: (_, record) => (
+                <a href={`http://localhost:8080/faturas/download/${record.id}`} download>
+                    Download
+                </a>
+            )
+        }
+    ];
+
+    const paginationConfig = {
+        pageSize: 5,
+        showSizeChanger: false,
+    };
+
   return (
     <main className='w-screen flex'>
         <Sidebar/>
@@ -42,34 +80,7 @@ const Library = () => {
             onChange={(e) => searchFaturas(e.target.value)} 
             className='p-2 w-1/2 rounded border-2 border-gray-500'
             />
-            <table className='w-full'>
-                <thead className='w-full text-center'>
-                    <tr>
-                        <th>ID</th>
-                        <th>Número Cliente</th>
-                        <th>Mês Referência</th>
-                        <th>Quantidade Energia Elétrica</th>
-                        <th>Valor Energia Elétrica</th>
-                        <th>Download</th>
-                    </tr>
-                </thead>
-                <tbody className='w-full text-center'>
-                    {faturas.map(fatura => (
-                        <tr key={fatura.id}>
-                            <td>{fatura.id}</td>
-                            <td>{fatura.numero_cliente}</td>
-                            <td>{fatura.mes_referencia}</td>
-                            <td>{fatura.energia_eletrica_quantidade}</td>
-                            <td>{fatura.energia_eletrica_valor}</td>
-                            <td>
-                                <a href={`http://localhost:8080/faturas/download/${fatura.id}`} download>
-                                    Download
-                                </a>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+            <Table dataSource={faturas} columns={columns}  pagination={paginationConfig} />
     </section>
     </main>
   )
