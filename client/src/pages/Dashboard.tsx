@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import Sidebar from '../components/Sidebar';
 
 const Dashboard = () => {
 
@@ -18,33 +19,10 @@ const Dashboard = () => {
         fetchFaturas();
     }, []);
 
-
-
   return (
-    <main>
-         <h1>Faturas</h1>
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Número Cliente</th>
-                        <th>Mês Referência</th>
-                        <th>Quantidade Energia Elétrica</th>
-                        <th>Valor Energia Elétrica</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {faturas.map(fatura => (
-                        <tr key={fatura.id}>
-                            <td>{fatura.id}</td>
-                            <td>{fatura.numero_cliente}</td>
-                            <td>{fatura.mes_referencia}</td>
-                            <td>{fatura.energia_eletrica_quantidade}</td>
-                            <td>{fatura.energia_eletrica_valor}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+    <main className='w-screen flex'>
+    <Sidebar />
+    <h1>Dashboard</h1>
     </main>
   )
 }
