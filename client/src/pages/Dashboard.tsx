@@ -24,7 +24,7 @@ const Dashboard = () => {
   return (
     <main className='w-screen flex'>
     <Sidebar />
-    <section className='flex flex-col p-10 gap-10'>
+    <section className='flex flex-col p-10 gap-10 justify-center items-center w-full'>
     <h1>Dashboard</h1>
 
     <LineChart width={600} height={300} data={data}>
