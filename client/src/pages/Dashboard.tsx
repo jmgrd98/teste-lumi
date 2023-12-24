@@ -6,9 +6,9 @@ import { Fatura } from '../models/Fatura';
 
 const Dashboard = () => {
     const [faturas, setFaturas] = useState([]);
-    const [searchTerm, setSearchTerm] = useState('');
-    const [energyData, setEnergyData] = useState([]);
-    const [monetaryData, setMonetaryData] = useState([]);
+    const [selectedNumeroCliente, setSelectedNumeroCliente] = useState('');
+    const [energyData, setEnergyData] = useState<any[]>([]);
+    const [monetaryData, setMonetaryData] = useState<any[]>([]);
 
     useEffect(() => {
         const fetchFaturas = async () => {
@@ -24,22 +24,26 @@ const Dashboard = () => {
     }, []);
 
     useEffect(() => {
-        const filteredFaturas = searchTerm ? faturas.filter((fatura: Fatura) => fatura.numero_cliente.includes(searchTerm)) : faturas;
+        const filteredFaturas = selectedNumeroCliente
+            ? faturas.filter((fatura: Fatura) => fatura.numero_cliente === selectedNumeroCliente)
+            : faturas;
         processChartData(filteredFaturas);
-    }, [searchTerm, faturas]);
-
-    const filteredFaturas = searchTerm
-        ? faturas.filter((fatura: Fatura) => fatura.numero_cliente.includes(searchTerm))
-        : faturas;
+    }, [selectedNumeroCliente, faturas]);
 
         const processChartData = (faturas: Fatura[]) => {
-            const energyChartData = faturas.map((fatura: Fatura) => ({
+            if (!selectedNumeroCliente) {
+                setEnergyData([{ name: '', Consumo: null, 'Energia Compensada': null }]);
+                setMonetaryData([{ name: '', 'Total sem GD': null, 'Economia GD': null }]);
+                return;
+            }
+            
+            const energyChartData: any = faturas.map((fatura: Fatura) => ({
                 name: fatura.mes_referencia,
                 Consumo: fatura.energia_eletrica_quantidade + fatura.energia_scee_quantidade,
                 'Energia Compensada': fatura.energia_compensada_quantidade
             }));
         
-            const monetaryChartData = faturas.map(fatura => ({
+            const monetaryChartData: any = faturas.map(fatura => ({
                 name: fatura.mes_referencia,
                 'Total sem GD': (fatura.energia_eletrica_valor + fatura.energia_scee_valor + fatura.contrib_ilum_publica).toFixed(2),
                 'Economia GD': fatura.energia_compensada_valor
@@ -55,13 +59,16 @@ const Dashboard = () => {
             <Sidebar />
             <section className='flex flex-col p-10 gap-10 justify-center items-center w-full'>
                 <h1>Dashboard</h1>
-                <input 
-                    type="text" 
-                    value={searchTerm} 
-                    onChange={(e) => setSearchTerm(e.target.value)} 
-                    placeholder="Pesquisar por número de cliente" 
+                <select 
+                    value={selectedNumeroCliente} 
+                    onChange={(e) => setSelectedNumeroCliente(e.target.value)} 
                     className='p-2 w-1/2 rounded border-2 border-gray-500'
-                />
+                >
+                    <option value="">Selecione um número de cliente</option>
+                    <option value="7005400387">7005400387</option>
+                    <option value="7202187422">7202187422</option>
+                    <option value="7202788969">7202788969</option>
+                </select>
                 <div className='flex flex-wrap gap-10'>
                 <div className='flex gap-5 text-center items-center justify-center'>
                     <div className='flex flex-col gap-3 text-center w-full items-center'>
