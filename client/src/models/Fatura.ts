@@ -8,5 +8,5 @@ export interface Fatura {
     energia_scee_valor: number,
     energia_compensada_quantidade: number,
     energia_compensada_valor: number,
-    contrib_ilum_public: number
+    contrib_ilum_publica: number
 }
