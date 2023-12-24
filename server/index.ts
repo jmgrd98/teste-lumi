@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import faturaRoutes from './routes/faturaRoutes';
 
-const app = express();
+export const app = express();
 const port = 8080;
 
 app.use(cors());
