@@ -4,7 +4,9 @@ import '@testing-library/jest-dom';
 import Library from '../pages/Library';
 import axios from 'axios';
 
-vi.mock('axios');
+vi.mock('axios', () => ({
+  get: vi.fn(() => Promise.resolve({ data: mockFaturas }))
+}));
 
 const mockFaturas = [
     {
