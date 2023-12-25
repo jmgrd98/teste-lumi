@@ -1,0 +1,28 @@
+version: '3.1'
+
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: mydatabase
+    volumes:
+      - my_dbdata:/var/lib/postgresql/data
+
+  backend:
+    build: ./server # Caminho para o diretório do backend
+    ports:
+      - "8080:8080"
+    environment:
+      DATABASE_URL: postgresql://postgres:mysecretpassword@db:5432/mydatabase
+
+  frontend:
+    build: ./client # Caminho para o diretório do frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+volumes:
+  my_dbdata:

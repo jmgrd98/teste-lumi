@@ -1,5 +1,5 @@
 # Escolha a imagem base
-FROM node:14
+FROM node:18.17
 
 # Defina o diretório de trabalho no container
 WORKDIR /usr/src/app
@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 8080
 
 # Comando para iniciar a aplicação
-CMD ["node", "server.js"]
+CMD ["npm", "start"]

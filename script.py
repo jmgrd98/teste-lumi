@@ -2,16 +2,6 @@ import os
 import psycopg2
 import re
 from pdfminer.high_level import extract_text
-import pdfplumber
-
-def extract_table_data(pdf_path):
-    with pdfplumber.open(pdf_path) as pdf:
-        all_text = []
-        for page in pdf.pages:
-            table = page.extract_table()
-            if table:
-                all_text.extend(table)
-        return all_text
 
 def extract_data_from_pdf(pdf_path):
     global id
