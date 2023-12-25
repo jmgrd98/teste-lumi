@@ -18,6 +18,7 @@ def extract_data_from_pdf(pdf_path):
 
     text = extract_text(pdf_path)
     lines = text.split('\n')
+    print(text)
 
     numero_cliente = None
     mes_referencia = None
@@ -117,6 +118,13 @@ def extract_data_from_pdf(pdf_path):
     return (numero_cliente, mes_referencia, energia_eletrica_quantidade, energia_eletrica_valor, energia_scee_quantidade, energia_scee_valor, energia_compensada_quantidade, energia_compensada_valor, contrib_ilum_publica)
 
 def insert_into_postgres(data):
+    # connection = psycopg2.connect(
+    #     user="postgres",
+    #     password="b15ACAgEGda42cec5BFFgbfa-12fdE3E",
+    #     host="viaduct.proxy.rlwy.net",
+    #     port="30558",
+    #     database="railway"
+    # )
     connection = psycopg2.connect(
         user="postgres",
         password="root",
