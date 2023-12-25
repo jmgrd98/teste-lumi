@@ -4,10 +4,11 @@ Olá, pessoal! Esse é o projeto que eu desenvolvi com muito carinho e dedicaç�
 
 ## Tecnologias Utilizadas
 
-- **Frontend:** React, Ant Design, Axios
+- **Frontend:** React, Ant Design, TailwindCSS, Axios, Redux, Framer Motion
 - **Backend:** Node.js, Express, Prisma
 - **Database:** PostgreSQL
-- **Outras:** Redux, Vitest, Framer Motion
+- **Tests** Vitest
+- **Scraper** Python, PDFMiner
 
 ## Configuração do Projeto
 
@@ -20,7 +21,7 @@ Olá, pessoal! Esse é o projeto que eu desenvolvi com muito carinho e dedicaç�
 ### Configuração da Base de Dados
 
 1. Instale o PostgreSQL.
-2. Crie uma base de dados para o projeto.
+2. Crie um banco de dados para o projeto com o nome de "lumi" (precisa ser esse nome se não o scraper em Python não irá fazer a raspagem de dados corretamente).
 3. Configure as variáveis de ambiente para o acesso à base de dados no arquivo `.env`.
 
 ### Configuração do Backend
