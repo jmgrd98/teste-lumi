@@ -44,7 +44,7 @@ export async function downloadFaturaFile(req: Request, res: Response) {
         const fatura = await FaturaService.getFaturaById(id);
 
         if (fatura) {
-            res.download(`../faturas/fatura-${fatura.id}.pdf`);
+            res.download(`../faturas_download/fatura-${fatura.id}.pdf`);
         } else {
             res.status(404).send('File not found');
         }

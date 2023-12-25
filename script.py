@@ -18,7 +18,6 @@ def extract_data_from_pdf(pdf_path):
 
     text = extract_text(pdf_path)
     lines = text.split('\n')
-    print(text)
 
     numero_cliente = None
     mes_referencia = None
