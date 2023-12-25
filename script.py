@@ -117,20 +117,20 @@ def extract_data_from_pdf(pdf_path):
     return (numero_cliente, mes_referencia, energia_eletrica_quantidade, energia_eletrica_valor, energia_scee_quantidade, energia_scee_valor, energia_compensada_quantidade, energia_compensada_valor, contrib_ilum_publica)
 
 def insert_into_postgres(data):
-    # connection = psycopg2.connect(
-    #     user="postgres",
-    #     password="b15ACAgEGda42cec5BFFgbfa-12fdE3E",
-    #     host="viaduct.proxy.rlwy.net",
-    #     port="30558",
-    #     database="railway"
-    # )
     connection = psycopg2.connect(
         user="postgres",
-        password="root",
-        host="localhost",
-        port="5432",
-        database="lumi"
+        password="6A4b5e3c6C3ca5fc5gaaD*eBA*gg5AaE",
+        host="viaduct.proxy.rlwy.net",
+        port="12044",
+        database="railway"
     )
+    # connection = psycopg2.connect(
+    #     user="postgres",
+    #     password="root",
+    #     host="localhost",
+    #     port="5432",
+    #     database="lumi"
+    # )
 
     cursor = connection.cursor()
 
