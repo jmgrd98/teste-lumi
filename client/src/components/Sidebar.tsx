@@ -1,5 +1,4 @@
 import { Link, useLocation } from "react-router-dom";
-import { useState } from 'react';
 import { FiMenu, FiX } from 'react-icons/fi';
 import lumi from '../assets/lumi-logo.png';
 import { motion } from 'framer-motion';

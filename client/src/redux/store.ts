@@ -4,7 +4,7 @@ const initialState = {
   isSidebarOpen: false,
 };
 
-function sidebarReducer(state = initialState, action) {
+function sidebarReducer(state = initialState, action: any) {
   switch (action.type) {
     case 'TOGGLE_SIDEBAR':
       return {

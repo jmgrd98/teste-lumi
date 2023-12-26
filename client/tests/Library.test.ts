@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import Library from '../pages/Library';
+import Library from '../src/pages/Library';
 import axios from 'axios';
 
 vi.mock('axios', () => ({
