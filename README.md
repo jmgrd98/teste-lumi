@@ -45,7 +45,7 @@ Olá, pessoal! Esse é o projeto que eu desenvolvi com muito carinho e dedicaç�
    # ou
    yarn start
 
-Tenha mais informações sobre os endpoints acessando a documentação Swagger no localhost:8080/api-docs
+**Saiba mais sobre a API acessando a documentação Swagger no endpoint /api-docs.**
    
 ### Configuração do Frontend
 
