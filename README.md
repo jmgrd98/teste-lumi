@@ -26,7 +26,7 @@ Olá, pessoal! Esse é o projeto que eu desenvolvi com muito carinho e dedicaç�
 
 ### Configuração do Backend
 
-1. Navegue até a pasta do backend.
+1. Navegue até a pasta do backend (server).
 2. Instale as dependências:
    ```bash
    npm install
@@ -45,4 +45,16 @@ Olá, pessoal! Esse é o projeto que eu desenvolvi com muito carinho e dedicaç�
    # ou
    yarn start
    
+### Configuração do Frontend
 
+1. Navege até a pasta do frontend (client).
+2. Instale as dependências:
+    ```bash
+   npm install
+   # ou
+   yarn install
+3. Inicie a aplicação:
+   ```bash
+   npm run dev
+   # ou
+   yarn start dev
