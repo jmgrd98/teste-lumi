@@ -4,9 +4,19 @@ const swaggerDefinition = {
     schemas: {
       Fatura: {
         type: 'object',
-        // ... properties of the Fatura schema
+        properties: {
+          id: { type: 'integer' },
+          numero_cliente: { type: 'string' },
+          mes_referencia: { type: 'string' },
+          energia_eletrica_quantidade: { type: 'number' },
+          energia_eletrica_valor: { type: 'number' },
+          energia_scee_quantidade: { type: 'number' },
+          energia_scee_valor: { type: 'number' },
+          energia_compensada_quantidade: { type: 'number' },
+          energia_compensada_valor: { type: 'number' },
+          contrib_ilum_publica: { type: 'number' },
+        },
       },
-    },
   },
   info: {
     title: 'Teste Lumi API',

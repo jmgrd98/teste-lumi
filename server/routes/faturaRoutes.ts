@@ -19,6 +19,7 @@ const router = express.Router();
  *                 $ref: '#/components/schemas/Fatura'
  */
 router.get('/', FaturaController.getAllFaturas);
+
 /**
  * @swagger
  * /faturas/{id}:
@@ -41,8 +42,57 @@ router.get('/', FaturaController.getAllFaturas);
  *       404:
  *         description: Fatura not found.
  */
-router.get('/fatura/:id', FaturaController.getFaturaById);
+router.get('/:id', FaturaController.getFaturaById);
+
+/**
+ * @swagger
+ * /faturas/cliente/{numero_cliente}:
+ *   get:
+ *     summary: Retrieve faturas by numero_cliente
+ *     parameters:
+ *       - in: path
+ *         name: numero_cliente
+ *         required: true
+ *         description: Cliente's numero to retrieve faturas.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: A list of faturas for the specified cliente.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Fatura'
+ *       404:
+ *         description: No faturas found for the specified numero_cliente.
+ */
 router.get('/cliente/:numero_cliente', FaturaController.getFaturaByNumeroCliente);
+
+/**
+ * @swagger
+ * /faturas/download/{id}:
+ *   get:
+ *     summary: Download a fatura file
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Numeric ID of the fatura file to download.
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Fatura file downloaded successfully.
+ *         content:
+ *           application/octet-stream:
+ *             schema:
+ *               type: string
+ *               format: binary
+ *       404:
+ *         description: Fatura file not found.
+ */
 router.get('/download/:id', FaturaController.downloadFaturaFile);
 
 export default router;
