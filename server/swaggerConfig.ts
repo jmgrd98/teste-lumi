@@ -17,6 +17,7 @@ const swaggerDefinition = {
           contrib_ilum_publica: { type: 'number' },
         },
       },
+    },
   },
   info: {
     title: 'Teste Lumi API',
