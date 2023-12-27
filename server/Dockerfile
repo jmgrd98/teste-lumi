@@ -8,7 +8,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Instale as dependências do projeto
-RUN npm install
+RUN npm install --omit=dev
 
 # Copie os arquivos do projeto para o diretório de trabalho
 COPY . .
