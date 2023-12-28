@@ -25,13 +25,13 @@ const mockFaturas = [
 
 describe('Library', () => {
     it('renders the library page', () => {
-      render(<Library />);
+      render(Library);
       const titleElement = screen.getByText('Faturas');
       expect(titleElement).toBeInTheDocument();
     });
 
     it('renders search input and table', () => {
-      render(<Library />);
+      render(Library);
       const inputElement = screen.getByPlaceholderText('Pesquise um número de cliente');
       const tableElement = screen.getByRole('table');
       expect(inputElement).toBeInTheDocument();
@@ -40,21 +40,20 @@ describe('Library', () => {
 
     it('updates table on search', async () => {
       axios.get.mockResolvedValue({ data: mockFaturas });
-      render(<Library />);
+      render(Library);
       const inputElement = screen.getByPlaceholderText('Pesquise um número de cliente');
       fireEvent.change(inputElement, { target: { value: '7202187422' } });
       await waitFor(() => {
-        // Check that the table updates with mock data
       });
     });
 
     it('handles API errors gracefully', async () => {
       axios.get.mockRejectedValue(new Error('API error'));
-      render(<Library />);
+      render(Library);
       await waitFor(() => {
-        // Check how your component handles and displays the error
+
       });
     });
 
-    // Additional tests for pagination and download functionality
+
 });

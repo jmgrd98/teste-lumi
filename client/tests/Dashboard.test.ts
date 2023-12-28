@@ -26,7 +26,7 @@ vi.mock('axios', () => ({
 
 describe('Dashboard', () => {
   it('renders the dashboard title', () => {
-    render(<Dashboard />);
+    render(Dashboard);
     const titleElement = screen.getByText('Dashboard');
     expect(titleElement).toBeInTheDocument();
   });
@@ -40,33 +40,31 @@ describe('Dashboard', () => {
   });
 
   it('shows no data initially in the charts', async () => {
-    render(<Dashboard />);
-    // Here you would check that the charts are empty or display a "no data" message
+    render(Dashboard);
+
   });
 
   it('updates charts on selecting a customer number', async () => {
-    render(<Dashboard />);
+    render(Dashboard);
     const dropdown = screen.getByRole('combobox');
-    userEvent.selectOptions(dropdown, "7005400387"); // Mock selection
+    userEvent.selectOptions(dropdown, "7005400387");
     await waitFor(() => {
-      // Check that the charts update with mock data
+
     });
   });
   
   it('clears charts on selecting no customer number', async () => {
-    render(<Dashboard />);
+    render(Dashboard);
     const dropdown = screen.getByRole('combobox');
-    userEvent.selectOptions(dropdown, ""); // Select no customer number
+    userEvent.selectOptions(dropdown, "");
     await waitFor(() => {
-      // Check that the charts clear out
     });
   });
   
   it('handles API errors gracefully', async () => {
     axios.get.mockRejectedValue(new Error('API error'));
-    render(<Dashboard />);
+    render(Dashboard);
     await waitFor(() => {
-      // Check how your component handles and displays the error
       const errorElement = screen.getByText(/API error/i);
       expect(errorElement).toBeInTheDocument();
     });
