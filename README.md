@@ -1,6 +1,6 @@
 # Teste técnico para a empresa Lumi
 
-Olá, pessoal! Esse é o projeto que eu desenvolvi com muito carinho e dedicação para o teste para o processo seletivo da Lumi para Desenvolvedor Fullstack Pleno.
+Olá, pessoal! Esse é o projeto que eu desenvolvi com muito carinho e dedicação para o teste do processo seletivo da Lumi para Desenvolvedor Fullstack Pleno.
 
 ## Tecnologias Utilizadas
 
