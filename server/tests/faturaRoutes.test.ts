@@ -10,6 +10,6 @@ describe('GET /faturas', () => {
       .expect(200);
 
     expect(response.body).toBeInstanceOf(Array);
-    // Additional assertions...
+
   });
 });
