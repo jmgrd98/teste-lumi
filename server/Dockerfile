@@ -8,7 +8,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Instale as dependências do projeto
-RUN npm install --omit=dev
+RUN npm install && npm install typescript@4.5.2
 
 # Copie os arquivos do projeto para o diretório de trabalho
 COPY . .
