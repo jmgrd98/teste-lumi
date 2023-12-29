@@ -17,6 +17,7 @@ Olá, pessoal! Esse é o projeto que eu desenvolvi com muito carinho e dedicaç�
 - Node.js
 - npm ou yarn
 - PostgreSQL
+- Python3
 
 ### Configuração da Base de Dados
 
