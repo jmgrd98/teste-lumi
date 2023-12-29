@@ -2,6 +2,15 @@ import os
 import psycopg2
 import re
 from pdfminer.high_level import extract_text
+from dotenv import load_dotenv
+
+load_dotenv()
+
+DB_USER = os.getenv("DB_USER")
+DB_PASSWORD = os.getenv("DB_PASSWORD")
+DB_HOST = os.getenv("DB_HOST")
+DB_PORT = os.getenv("DB_PORT")
+DB_NAME = os.getenv("DB_NAME")
 
 def extract_data_from_pdf(pdf_path):
     global id
@@ -109,18 +118,11 @@ def extract_data_from_pdf(pdf_path):
 def insert_into_postgres(data):
     connection = psycopg2.connect(
         user="postgres",
-        password="6A4b5e3c6C3ca5fc5gaaD*eBA*gg5AaE",
-        host="viaduct.proxy.rlwy.net",
-        port="12044",
-        database="railway"
+        password="root",
+        host="localhost",
+        port="5432",
+        database="lumi"
     )
-    # connection = psycopg2.connect(
-    #     user="postgres",
-    #     password="root",
-    #     host="localhost",
-    #     port="5432",
-    #     database="lumi"
-    # )
 
     cursor = connection.cursor()
 
