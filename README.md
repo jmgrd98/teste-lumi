@@ -21,7 +21,17 @@ Olá, pessoal! Esse é o projeto que eu desenvolvi com muito carinho e dedicaç�
 ### Configuração da Base de Dados
 
 1. Instale o PostgreSQL na sua máquina.
-2. Crie um banco de dados para o projeto.
+2. Crie um banco de dados para o projeto chamado "lumi" com uma tabela chamada "faturas" com as seguintes colunas:
+- id INTEGER
+- numero_cliente TEXT
+- mes_referencia TEXT
+- energia_eletrica_quantidade DOUBLE PRECISION
+- energia_eletrica_valor DOUBLE PRECISION
+- energia_scee_quantidade DOUBLE PRECISION
+- energia_scee_valor DOUBLE PRECISION
+- energia_compensada_quantidade DOUBLE PRECISION
+- energia_compensada_valor DOUBLE PRECISION
+- contrib_ilum_publica DOUBLE PRECISION
 3. Configure as variáveis de ambiente para o acesso à base de dados no arquivo `.env`.
 
 ### Configuração do Backend
