@@ -4,7 +4,7 @@ Olá, pessoal! Esse é o projeto que eu desenvolvi com muito carinho e dedicaç�
 
 ## Tecnologias Utilizadas
 
-- **Frontend:** React, Ant Design, TailwindCSS, Axios, Redux, Framer Motion
+- **Frontend:** React, Ant Design, TailwindCSS, Axios, Redux, Framer Motion, Recharts
 - **Backend:** Node.js, Express, Prisma
 - **Banco de dados:** PostgreSQL
 - **Testes:** Vitest
