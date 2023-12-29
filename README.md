@@ -46,6 +46,9 @@ Olá, pessoal! Esse é o projeto que eu desenvolvi com muito carinho e dedicaç�
 4. Rode as migrações do Prisma:
    ```bash
    npx prisma migrate dev
+6. Instale as dependências do scraper em Python:
+   ```
+   pip install -r requirements.txt
 5. Execute o script.py para realizar a raspagem dos dados e salvá-los no banco de dados PostgreSQL:
    ```bash
    python script.py
