@@ -1,6 +1,4 @@
-# Teste técnico para a empresa Lumi
-
-Olá, pessoal! Esse é o projeto que eu desenvolvi com muito carinho e dedicação para o teste do processo seletivo da Lumi para Desenvolvedor Fullstack Pleno.
+Esse é um sistema que lê dados de faturas de energia elétrica através de um bot escrito em Python, salvando-os em um banco PostgreSQL e disponibilizando através de um frontend em ReactJS.
 
 ## Tecnologias Utilizadas
 
