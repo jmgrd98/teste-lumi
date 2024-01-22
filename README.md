@@ -1,4 +1,4 @@
-Esse é um sistema que lê dados de faturas de energia elétrica através de um bot escrito em Python, salvando-os em um banco PostgreSQL e disponibilizando através de um frontend em ReactJS.
+Esse é um sistema que lê dados de faturas de energia elétrica através de um bot escrito em Python, salvando-os em um banco PostgreSQL e disponibilizando em gráficos através de um frontend em ReactJS utilizando a biblioteca Recharts.
 
 ## Tecnologias Utilizadas
 
